@@ -1,5 +1,17 @@
 # cloudcasting-network-config-generator
 
+## Building
+
+To create a production version of your app/site: 
+--> generate a dist folder / our custom css & js
+
+```bash
+npm run watch
+```
+
+```bash
+npm run watch-js
+```
 
 
 ## Getting started

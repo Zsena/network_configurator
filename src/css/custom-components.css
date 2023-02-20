@@ -1,0 +1,13 @@
+@import "./components/buttons.css";
+
+.custom-checkbox {
+    @apply w-4 h-4 accent-green checked:text-white rounded focus:ring-green dark:focus:ring-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+}
+
+.custom-form-label {
+    @apply text-slate-900 text-sm font-semibold dark:text-slate-200;
+}
+
+.checkbox-wrapper {
+    @apply flex items-center space-x-2;
+}
