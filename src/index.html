@@ -56,19 +56,19 @@
         file for your setup.
       </p>
     </section>
-    <section x-data="{ dhcp: false, wifi: false, gprs: false, proxy: false, wifi_model: false,  }">
+    <section x-data="{ wifi: false, gprs: false, proxy: false, wifi_model: false,  }">
 
       <div class="md:flex justify-between items-center">
         <div>
           <div class="checkbox-wrapper">
-            <input @click="dhcp = ! dhcp" class="custom-checkbox" type="checkbox" name="config" value="" id="config" />
+            <input @click="dhcp_off = ! dhcp_off" class="custom-checkbox" type="checkbox" name="dhcp_off" value="" id="dhcp_off" />
             <label class="custom-form-label" for="config">
               Use fixed IP(v4) for wired connection (instead of DHCP)
             </label>
           </div>
           <div class="checkbox-wrapper">
-            <input @click="wifi = ! wifi" class="custom-checkbox" type="checkbox" name="config" value="" id="config" />
-            <label class="custom-form-label" for="config">Enable WiFi</label>
+            <input @click="wifi_on = ! wifi_on" class="custom-checkbox" type="checkbox" name="wifi_on" value="" id="wifi_on" />
+            <label class="custom-form-label" for="wifi_on">Enable WiFi</label>
           </div>
         </div>
         <div>
@@ -86,13 +86,13 @@
           </div>
         </div>
       </div>
-      <div class="my-20">
-        <div x-show="dhcp">
+      <div class="my-5">
+        <div x-show="dhcp_off">
           <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="dhcp_ip">
+            <label class="custom-form-label" for="eth_ip">
               IP address (eg. 192.168.1.10)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="dhcp_ip" value="192.168.0.10" id="dhcp_ip" />
+            <input class="custom-input max-w-[240px]" type="text" name="eth_ip" value="192.168.0.10" id="eth_ip" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="dhcp_netmask">
@@ -119,7 +119,7 @@
             <input class="custom-input max-w-[240px]" type="text" name="dhcp_dns2" value="0.0.0.0" id="dhcp_dns2" />
           </div>
         </div>
-        <div x-show="wifi">
+        <div x-show="wifi_on">
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="wifi_ssid">
               Accesspoint name (SSID, case sensitive!)
@@ -166,12 +166,16 @@
       </div>
     </section>
 
-    <section class="my-10">
-      <h5 class="h5-elem mb-10">Please download the file called network.cfg to a pendrive (FAT file system) by clicking on the button below, then and plug it into the USB port of your device for 20 seconds. Reboot the player afterwards.</h5>
-      <div class="my-10">
+    <section class="my-5">
+      <h5 class="h5-elem mb-5">Please download the file called network.cfg to a pendrive (FAT file system) by clicking on the button below, then and plug it into the USB port of your device for 20 seconds. Reboot the player afterwards.</h5>
+      <div class="my-5">
         <button class="btn-secondary cursor-pointer" @click="download_data">Download network.cfg</button>
       </div>
       <p class="italic font-medium">If the above does not work (with old browsers), just create the file with notepad with the following content:</p>
+    </section>
+    <section class="my-5">
+      <h5 class="h5-elem mb-2">Config preview</h5>
+      <div class="border-blue/40 border-2 max-w-[400px] p-5" x-html="render_config_br()"></div>
     </section>
   </main>
   <footer>

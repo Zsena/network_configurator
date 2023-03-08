@@ -47,12 +47,12 @@ document.addEventListener("alpine:init", () => {
 
     init() {
       this.render_config();
-      // this.render_config_br();
+      this.render_config_br();
     },
 
-    // render_config_br() {
-    //   return sce.trustAsHtml(this.render_config("<br/>"));
-    // },
+    render_config_br() {
+      return this.render_config("<br/>");
+    },
 
     render_config(lineseparator) {
       let tmp = "";
