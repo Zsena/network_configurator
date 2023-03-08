@@ -96,9 +96,9 @@ document.addEventListener("alpine:init", () => {
       return tmp;
     },
     download_data() {
-      var a = window.document.createElement('a');
+      let a = window.document.createElement('a');
       a.href = window.URL.createObjectURL(new Blob([this.render_config("\n")], {type: 'application/octet-stream'}));
-      a.download = 'network.cfg';
+      a.download = 'update_config.cfg';
       
       // Append anchor to body.
       document.body.appendChild(a)
