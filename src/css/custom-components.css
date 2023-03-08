@@ -1,13 +1,21 @@
 @import "./components/buttons.css";
 
 .custom-checkbox {
-    @apply w-4 h-4 accent-green checked:text-white rounded focus:ring-green dark:focus:ring-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
+  @apply w-4 h-4 accent-green checked:text-white rounded focus:ring-green dark:focus:ring-green dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600;
 }
 
 .custom-form-label {
-    @apply text-slate-900 text-sm font-semibold dark:text-slate-200;
+  @apply text-slate-900 text-sm font-semibold dark:text-slate-200;
 }
 
-.checkbox-wrapper {
-    @apply flex items-center space-x-2;
+.checkbox-wrapper,
+.input-wrapper {
+  @apply flex items-center space-x-2;
+}
+
+.custom-input {
+  @apply appearance-none border border-teal-600
+    bg-gray-50 text-gray-900 text-sm rounded-lg 
+    focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
+    dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500;
 }
