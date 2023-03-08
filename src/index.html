@@ -13,7 +13,7 @@
 <body class="flex flex-col min-h-screen antialiased">
   <header>
     <!-- Navbar goes here -->
-    <img class="w-full object-cover max-h-[400px]" src="https://www.thecloudcasting.com/wp-content/uploads/slide11-1.jpg" alt="Header img" />
+    <img class="w-full object-cover max-h-[100px]" src="https://www.thecloudcasting.com/wp-content/uploads/slide11-1.jpg" alt="Header img" />
     <section class="container px-4 pt-10 mx-auto">
       <div class="flex flex-col md:flex-row items-center justify-between">
         <div class="flex flex-col md:flex-row items-center">
@@ -46,7 +46,7 @@
     </div>
   </header>
   <hr class="border-blue/40 border-2 my-4" />
-  <main class="container px-4 py-10 mx-auto">
+  <main x-data="app" class="container px-4 py-10 mx-auto">
     <!-- Page content goes here -->
     <section>
       <h2 class="h2-elem">MPX/ISR & Android network configurator</h2>
@@ -157,9 +157,7 @@
         <div x-show="gprs">
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="wifi_ssid">
-              Accesspoint name (SSID, case sensitive!)
-            </label>
-            <input class="custom-input max-w-[240px]" type="text" name="wifi_ssid" value="wifi network" id="wifi_ssid" />
+              Enable 3G/GPRS (you need an external 3G dongle)label>
           </div>
         </div>
         <div x-show="proxy">
@@ -171,7 +169,7 @@
     <section class="my-10">
       <h5 class="h5-elem mb-10">Please download the file called network.cfg to a pendrive (FAT file system) by clicking on the button below, then and plug it into the USB port of your device for 20 seconds. Reboot the player afterwards.</h5>
       <div class="my-10">
-        <a href="/" class="btn-secondary">Download network.cfg</a>
+        <button class="btn-secondary cursor-pointer" @click="download_data">Download network.cfg</button>
       </div>
       <p class="italic font-medium">If the above does not work (with old browsers), just create the file with notepad with the following content:</p>
     </section>
