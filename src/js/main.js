@@ -73,6 +73,8 @@ document.addEventListener("alpine:init", () => {
       this.gsm_wrapper = false;
       this.proxy_wrapper = false;
       this.device_type = this.device_android;
+      this.gsm_on = false;
+      this.proxy_on = false;
     },
 
     render_config_br() {
