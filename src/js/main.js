@@ -35,6 +35,7 @@ document.addEventListener("alpine:init", () => {
     wifi_pass: "wifi PSK key",
     wifi_sec: false,
     wifi_ssid: "wifi network",
+    wifi_ssid_scan_enabled: false,
     gsm_on: false,
     gsm_apn: "please provide carrier apn",
     gsm_pin: "sim pin code, empty if none",
@@ -46,6 +47,7 @@ document.addEventListener("alpine:init", () => {
     proxy_type: "http",
     gsm_wrapper: true,
     proxy_wrapper: true,
+    wifi_ssid_scan_enabled_wrapper: false,
     all_config: true,
     device_type: "Device Type",
     device_android: "Device Type: Android",
@@ -75,6 +77,7 @@ document.addEventListener("alpine:init", () => {
       this.device_type = this.device_android;
       this.gsm_on = false;
       this.proxy_on = false;
+      this.wifi_ssid_scan_enabled_wrapper = true;
     },
 
     render_config_br() {
@@ -86,11 +89,16 @@ document.addEventListener("alpine:init", () => {
       let tmp = "";
       tmp += "eth_dhcp=";
       if(this.device_type === this.device_android){
-        tmp += this.dhcp_off ? "0" : "1";
         mark ="";
+        tmp += this.dhcp_off ? "0" : "1" + mark + lineseparator;
+        if (!this.wifi_ssid_scan_enabled) {
+          tmp += 'wifi_ssid_scan_enabled=' + mark + "0";
+        } else {
+          tmp += 'wifi_ssid_scan_enabled=' + mark + "1";
+        }
       } else {
-        tmp += this.dhcp_off ? "false" : "true";
         mark ='"';
+        tmp += this.dhcp_off ? "false" : "true";
       }
       tmp += lineseparator;
       if (this.dhcp_off) {
@@ -112,7 +120,7 @@ document.addEventListener("alpine:init", () => {
         if (this.wifi_sec) {
           tmp += 'wifi_pass='+ mark + this.wifi_pass + mark + lineseparator;
         }
-      } else tmp += 'wifi_ssid=""' + lineseparator;
+      } else tmp += 'wifi_ssid='+ mark + mark + lineseparator;
       if (this.gsm_on) {
         tmp += 'gsm_apn="' + this.gsm_apn + '"' + lineseparator;
         tmp += 'gsm_pin="' + this.gsm_pin + '"' + lineseparator;

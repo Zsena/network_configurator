@@ -160,6 +160,12 @@
               Enable proxy configuration
             </label>
           </div>
+          <div x-show="wifi_ssid_scan_enabled_wrapper" class="checkbox-wrapper">
+            <input @click="wifi_ssid_scan_enabled = ! wifi_ssid_scan_enabled" class="custom-checkbox" type="checkbox" name="wifi_ssid_scan_enabled" value="" id="wifi_ssid_scan_enabled" />
+            <label class="custom-form-label" for="wifi_ssid_scan_enabled">
+              Wifi ssid scan enabled
+            </label>
+          </div>
         </div>
       </div>
       <div class="my-5">
