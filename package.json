@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "npx tailwindcss -i ./src/css/main.css -o ./dist/css/custom-tailwind.css --watch",
-    "watch-js": "npx mix watch"
+    "watch:js": "npx mix watch"
   },
   "keywords": [
     "asdf"

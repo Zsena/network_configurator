@@ -111,17 +111,18 @@
           </h3>
           <div x-data="dropdown" x-on:keydown.escape.prevent.stop="close($refs.button)" x-on:focusin.window="! $refs.panel.contains($event.target) && close()" x-id="['dropdown-button']" class="relative">
             <!-- Button -->
-            <button x-ref="button" x-on:click="toggle()" :aria-expanded="open" :aria-controls="$id('dropdown-button')" type="button" class="dropdown-toggle mt-9 bg-teal-400 px-12 py-3 rounded-3xl hover:bg-teal-500 text-white">
-              Device type
+            <button x-ref="button" @click="toggle()" :aria-expanded="open" :aria-controls="$id('dropdown-button')" type="button" class="dropdown-toggle mt-9 bg-teal-400 px-12 py-3 rounded-3xl hover:bg-teal-500 text-white">
+              <span x-text="device_type"></span>
               <!--chevron-down -->
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>
             </button>
             <!-- Panel -->
-            <div x-ref="panel" x-show="open" x-transition.origin.top.left x-on:click.outside="close($refs.button)" :id="$id('dropdown-button')" style="display: none" class="absolute left-0 mt-2 w-40 rounded-md bg-white shadow-md">
-              <a href="#" class="dropdown-option"> MPX/ISR </a>
-              <a href="#" class="dropdown-option"> Android </a>
+            <div x-ref="panel" x-show="open" x-transition.origin.top.left @click.outside="close($refs.button)" :id="$id('dropdown-button')" style="display: none" class="absolute left-0 mt-2 w-full rounded-md bg-white shadow-md">
+              <div x-show="device_type != 'All'" @click="handleAll, close($refs.button)" class="dropdown-option" x-text="device_all">All</div>
+              <div @click="handleIsr, close($refs.button)" class="dropdown-option" x-text="device_isr">MPX/ISR </div>
+              <div @click="handleAndroid, close($refs.button)" class="dropdown-option" x-text="device_android">Android </div>
             </div>
           </div>
 
@@ -131,13 +132,13 @@
   </header>
   <main class="container px-4 py-10 mx-auto">
     <!-- Page content goes here -->
-    <section x-data="{ wifi: false, gprs: false, proxy: false, wifi_model: false,  }">
+    <section>
 
       <div class="xl:flex justify-between items-center">
         <div>
           <div class="checkbox-wrapper">
             <input @click="dhcp_off = ! dhcp_off" class="custom-checkbox" type="checkbox" name="dhcp_off" value="" id="dhcp_off" />
-            <label class="custom-form-label" for="config">
+            <label class="custom-form-label" for="dhcp_off">
               Use fixed IP(v4) for wired connection (instead of DHCP)
             </label>
           </div>
@@ -147,15 +148,15 @@
           </div>
         </div>
         <div>
-          <div class="checkbox-wrapper">
-            <input @click="gprs = ! gprs" class="custom-checkbox" type="checkbox" name="config" value="" id="config" />
-            <label class="custom-form-label" for="config">
+          <div x-show="gsm_wrapper" class="checkbox-wrapper">
+            <input @click="gsm_on = ! gsm_on" class="custom-checkbox" type="checkbox" name="gsm_on" value="" id="gsm_on" />
+            <label class="custom-form-label" for="gsm_on">
               Enable 3G/GPRS (you need an external 3G dongle)
             </label>
           </div>
-          <div class="checkbox-wrapper">
-            <input @click="proxy = ! proxy" class="custom-checkbox" type="checkbox" name="config" value="" id="config" />
-            <label class="custom-form-label" for="config">
+          <div x-show="proxy_wrapper" class="checkbox-wrapper">
+            <input @click="proxy_on = ! proxy_on" class="custom-checkbox" type="checkbox" name="proxy_on" value="" id="proxy_on" />
+            <label class="custom-form-label" for="proxy_on">
               Enable proxy configuration
             </label>
           </div>
@@ -167,31 +168,31 @@
             <label class="custom-form-label" for="eth_ip">
               IP address (eg. 192.168.1.10)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="eth_ip" value="192.168.0.10" id="eth_ip" />
+            <input class="custom-input max-w-[240px]" type="text" name="eth_ip" x-model="eth_ip" value="192.168.0.10" id="eth_ip" />
           </div>
           <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="dhcp_netmask">
+            <label class="custom-form-label" for="eth_netmask">
               Netmask (eg. 255.255.255.0)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="dhcp_netmask" value="255.255.255.0" id="dhcp_netmask" />
+            <input class="custom-input max-w-[240px]" type="text" name="eth_netmask" x-model="eth_netmask" value="255.255.255.0" id="eth_netmask" />
           </div>
           <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="dhcp_gateway">
+            <label class="custom-form-label" for="eth_gw">
               Gateway address (eg. 192.168.1.1)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="dhcp_gateway" value="192.168.0.1" id="dhcp_gateway" />
+            <input class="custom-input max-w-[240px]" type="text" name="eth_gw" x-model="eth_gw" value="192.168.0.1" id="eth_gw" />
           </div>
           <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="dhcp_dns1">
+            <label class="custom-form-label" for="eth_dns1">
               DNS server 1 (eg. 8.8.8.8)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="dhcp_dns1" value="8.8.8.8" id="dhcp_dns1" />
+            <input class="custom-input max-w-[240px]" type="text" name="eth_dns1" x-model="eth_dns1" value="8.8.8.8" id="eth_dns1" />
           </div>
           <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="dhcp_dns2">
+            <label class="custom-form-label" for="eth_dns2">
               DNS server 2 (eg. 0.0.0.0)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="dhcp_dns2" value="0.0.0.0" id="dhcp_dns2" />
+            <input class="custom-input max-w-[240px]" type="text" name="eth_dns2" x-model="eth_dns2" value="0.0.0.0" id="eth_dns2" />
           </div>
         </div>
         <div x-show="wifi_on">
@@ -199,46 +200,69 @@
             <label class="custom-form-label" for="wifi_ssid">
               Accesspoint name (SSID, case sensitive!)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="wifi_ssid" value="wifi network" id="wifi_ssid" />
+            <input class="custom-input max-w-[240px]" type="text" name="wifi_ssid" x-model="wifi_ssid" value="wifi network" id="wifi_ssid" />
           </div>
           <div class="input-wrapper my-2">
             <div class="flex md:items-center">
-              <button @click="wifi_model = ! wifi_model" class="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-teal-500 group-hover:from-cyan-500 group-hover:to-teal-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                  Wireless security model
-                </span>
-              </button>
-              <div x-show="wifi_model" class="sm:flex items-center">
-                <div class="checkbox-wrapper my-2 sm:mr-3">
-                  <input @click="proxy = ! proxy" class="custom-checkbox" type="checkbox" name="config" value="" id="config" />
-                  <label class="custom-form-label" for="config">
-                    Enable proxy configuration
-                  </label>
-                </div>
-                <div class="checkbox-wrapper my-2">
-                  <input @click="proxy = ! proxy" class="custom-checkbox" type="checkbox" name="config" value="" id="config" />
-                  <label class="custom-form-label" for="config">
-                    Enable proxy configuration
-                  </label>
-                </div>
-              </div>
+              <label for="wifi_sec">Wireless security model</label>
+              <select type="select" x-model="wifi_sec" name="wifi_sec" id="wifi_sec" class="custom-select">
+                <option value="false">Open network (no ecryption)</option>
+                <option value="true">WPA2-PSK (AES)</option>
+              </select>
             </div>
           </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="wifi_psk">
+          <div x-show="wifi_sec" class="input-wrapper my-2">
+            <label class="custom-form-label" for="wifi_pass">
               WPA2 key/password
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="wifi_psk" value="wifi PSK key" id="wifi_psk" />
+            <input class="custom-input max-w-[240px]" type="text" x-model="wifi_pass" name="wifi_pass" value="wifi PSK key" id="wifi_pass" />
           </div>
         </div>
-        <div x-show="gprs">
+        <div x-show="gsm_on">
           <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="wifi_ssid">
-              Enable 3G/GPRS (you need an external 3G dongle)label
+            <label class="custom-form-label" for="gsm_apn">APN name</label>
+            <input class="custom-input max-w-[240px]" type="text" x-model="gsm_apn" name="gsm_apn" value="please provide carrier apn" id="gsm_apn" />
+          </div>
+          <div class="input-wrapper my-2">
+            <label class="custom-form-label" for="gsm_pin">Sim pin code</label>
+            <input class="custom-input max-w-[240px]" type="text" x-model="gsm_pin" name="gsm_pin" value="sim pin code, empty if none" id="gsm_pin" />
           </div>
         </div>
-        <div x-show="proxy">
-          proxy
+        <div x-show="proxy_on">
+          <p class="py-2">Just leave everythin empty (the default) to clear the proxy settings of a player</p>
+          <div class="input-wrapper my-2">
+            <label class="custom-form-label" for="proxy_host">Proxy host</label>
+            <input class="custom-input max-w-[240px]" type="text" x-model="proxy_host" name="proxy_host" value="" placeholder="proxy server..." id="proxy_host" />
+          </div>
+          <div class="input-wrapper my-2">
+            <label class="custom-form-label" for="proxy_user">Proxy user</label>
+            <input class="custom-input max-w-[240px]" type="text" x-model="proxy_user" name="proxy_user" value="" placeholder="proxy user... (optional)" id="proxy_user" />
+          </div>
+          <div class="input-wrapper my-2">
+            <label class="custom-form-label" for="proxy_password">Proxy password</label>
+            <input class="custom-input max-w-[240px]" type="text" x-model="proxy_password" name="proxy_password" value="" placeholder="proxy password...  (optional)" id="proxy_password" />
+          </div>
+          <div class="input-wrapper my-2">
+            <label class="custom-form-label" for="proxy_type">Proxy type</label>
+            <select type="select" x-model="proxy_type" name="proxy_type" id="proxy_type" class="custom-select">
+              <option value="http">HTTP</option>
+              <option value="http_1_0">HTTP 1.0</option>
+              <option value="socks4">SOCKS 4</option>
+              <option value="socks5">SOCKS 5</option>
+              <option value="socks4a">SOCKS 4A</option>
+              <option value="socks5h">SOCKS 5 HOSTNAME</option>
+            </select>
+          </div>
+          <div class="input-wrapper my-2">
+            <label class="custom-form-label" for="proxy_auth">Proxy auth</label>
+            <select type="select" x-model="proxy_auth" name="proxy_auth" id="proxy_auth" class="custom-select">
+              <option value="basic">BASIC</option>
+              <option value="digest">DIGEST</option>
+              <option value="negotiate">NEGOTIATE</option>
+              <option value="ntlm">NTLM</option>
+              <option value="anyauth">ANYAUTH</option>
+            </select>
+          </div>
         </div>
       </div>
     </section>

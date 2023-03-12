@@ -14,8 +14,12 @@
 }
 
 .custom-input {
-  @apply appearance-none border border-teal-600
-    bg-gray-50 text-gray-900 text-sm rounded-lg 
-    focus:ring-teal-500 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
+  @apply appearance-none border border-zinc-300 transition duration-150 ease-in-out
+    bg-gray-50 text-gray-900 text-sm rounded-lg focus:outline-none
+    focus:ring-teal-500 focus:ring-2 focus:border-teal-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
     dark:placeholder-gray-400 dark:text-white dark:focus:ring-teal-500 dark:focus:border-teal-500;
+}
+
+.custom-select {
+  @apply relative z-0 w-full py-2 pl-3 pr-10 text-left transition duration-150 ease-in-out bg-white border border-zinc-300 rounded-md cursor-default focus:ring-teal-500 focus:ring-2 focus:outline-none focus:border-teal-300 sm:text-sm sm:leading-5;
 }

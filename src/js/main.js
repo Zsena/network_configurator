@@ -44,10 +44,35 @@ document.addEventListener("alpine:init", () => {
     proxy_password: "",
     proxy_auth: "basic",
     proxy_type: "http",
+    gsm_wrapper: true,
+    proxy_wrapper: true,
+    all_config: true,
+    device_type: "Device Type",
+    device_android: "Device Type: Android",
+    device_isr: "Device Type: MPX/ISR",
+    device_all: "Device Type: All",
 
     init() {
       this.render_config();
       this.render_config_br();
+    },
+
+    
+    handleAll(e) {
+      this.gsm_wrapper = true;
+      this.proxy_wrapper = true;
+      this.device_type = this.device_all;
+    },
+
+    handleIsr(e) {
+      this.gsm_wrapper = false;
+      this.device_type = this.device_isr;
+    },
+
+    handleAndroid(e) {
+      this.gsm_wrapper = false;
+      this.proxy_wrapper = false;
+      this.device_type = this.device_android;
     },
 
     render_config_br() {
@@ -55,35 +80,40 @@ document.addEventListener("alpine:init", () => {
     },
 
     render_config(lineseparator) {
+      let mark = '"'
       let tmp = "";
       tmp += "eth_dhcp=";
-      tmp += this.dhcp_off ? "false" : "true";
+      if(this.device_type === this.device_android){
+        tmp += this.dhcp_off ? "0" : "1";
+        mark ="";
+      } else {
+        tmp += this.dhcp_off ? "false" : "true";
+        mark ='"';
+      }
       tmp += lineseparator;
       if (this.dhcp_off) {
-        tmp += 'eth_ip="' + this.eth_ip + '"' + lineseparator;
-        tmp += 'eth_netmask="' + this.eth_netmask + '"' + lineseparator;
-        tmp += 'eth_gw="' + this.eth_gw + '"' + lineseparator;
-        tmp += 'eth_dns1="' + this.eth_dns1 + '"' + lineseparator;
-        tmp += 'eth_dns2="' + this.eth_dns2 + '"' + lineseparator;
+        tmp += 'eth_ip=' + mark + this.eth_ip + mark + lineseparator;
+        tmp += 'eth_netmask='+ mark + this.eth_netmask + mark + lineseparator;
+        tmp += 'eth_gw=' + mark + this.eth_gw + mark + lineseparator;
+        tmp += 'eth_dns1=' + mark + this.eth_dns1 + mark + lineseparator;
+        tmp += 'eth_dns2=' + mark + this.eth_dns2 + mark + lineseparator;
       }
       tmp += "wifi_enabled=";
       tmp += this.wifi_on ? "true" : "false";
       tmp += lineseparator;
       if (this.wifi_on) {
-        tmp += 'wifi_ssid="' + this.wifi_ssid + '"' + lineseparator;
-        tmp += 'wifi_mode="sta"' + lineseparator;
+        tmp += 'wifi_ssid=' + mark + this.wifi_ssid + mark + lineseparator;
+        tmp += 'wifi_mode='+ mark + 'sta' + mark + lineseparator;
         tmp += "wifi_security=";
         tmp += this.wifi_sec ? "true" : "false";
         tmp += lineseparator;
         if (this.wifi_sec) {
-          tmp += 'wifi_pass="' + this.wifi_pass + '"' + lineseparator;
+          tmp += 'wifi_pass='+ mark + this.wifi_pass + mark + lineseparator;
         }
       } else tmp += 'wifi_ssid=""' + lineseparator;
       if (this.gsm_on) {
         tmp += 'gsm_apn="' + this.gsm_apn + '"' + lineseparator;
         tmp += 'gsm_pin="' + this.gsm_pin + '"' + lineseparator;
-      } else {
-        tmp += 'gsm_apn=""' + lineseparator;
       }
       if (this.proxy_on) {
         tmp += 'proxy_host="' + this.proxy_host + '"' + lineseparator;
@@ -96,29 +126,32 @@ document.addEventListener("alpine:init", () => {
       return tmp;
     },
     download_data() {
-      let a = window.document.createElement('a');
-      a.href = window.URL.createObjectURL(new Blob([this.render_config("\n")], {type: 'application/octet-stream'}));
-      a.download = 'update_config.cfg';
-      
+      let a = window.document.createElement("a");
+      a.href = window.URL.createObjectURL(
+        new Blob([this.render_config("\n")], {
+          type: "application/octet-stream",
+        })
+      );
+      a.download = "update_config.cfg";
+
       // Append anchor to body.
-      document.body.appendChild(a)
+      document.body.appendChild(a);
       a.click();
-      
+
       // Remove anchor from body
-      document.body.removeChild(a)
-    }
+      document.body.removeChild(a);
+    },
   }));
 });
 
 Alpine.start();
 
-
-const mobile_icon = document.getElementById('mobileIcon');
-const mobile_menu = document.getElementById('mobileMenu');
+const mobile_icon = document.getElementById("mobileIcon");
+const mobile_menu = document.getElementById("mobileMenu");
 
 function openCloseMenu() {
-  mobile_menu.classList.toggle('block');
-  mobile_menu.classList.toggle('active');
+  mobile_menu.classList.toggle("block");
+  mobile_menu.classList.toggle("active");
 }
 
-mobile_icon.addEventListener('click', openCloseMenu);
+mobile_icon.addEventListener("click", openCloseMenu);
