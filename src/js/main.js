@@ -90,11 +90,11 @@ document.addEventListener("alpine:init", () => {
       tmp += "eth_dhcp=";
       if(this.device_type === this.device_android){
         mark ="";
-        tmp += this.dhcp_off ? "0" : "1" + mark + lineseparator;
+        tmp += this.dhcp_off ? "0" : "1";
         if (!this.wifi_ssid_scan_enabled) {
-          tmp += 'wifi_ssid_scan_enabled=' + mark + "0";
+          tmp += lineseparator + 'wifi_ssid_scan_enabled=' + mark + "0";
         } else {
-          tmp += 'wifi_ssid_scan_enabled=' + mark + "1";
+          tmp += lineseparator + 'wifi_ssid_scan_enabled=' + mark + "1";
         }
       } else {
         mark ='"';
