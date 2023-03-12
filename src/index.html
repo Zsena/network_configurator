@@ -138,31 +138,31 @@
         <div>
           <div class="checkbox-wrapper">
             <input @click="dhcp_off = ! dhcp_off" class="custom-checkbox" type="checkbox" name="dhcp_off" value="" id="dhcp_off" />
-            <label class="custom-form-label" for="dhcp_off">
+            <label class="custom-form-label max-w-[100%]" for="dhcp_off">
               Use fixed IP(v4) for wired connection (instead of DHCP)
             </label>
           </div>
           <div class="checkbox-wrapper">
             <input @click="wifi_on = ! wifi_on" class="custom-checkbox" type="checkbox" name="wifi_on" value="" id="wifi_on" />
-            <label class="custom-form-label" for="wifi_on">Enable WiFi</label>
+            <label class="custom-form-label max-w-[100%]" for="wifi_on">Enable WiFi</label>
           </div>
         </div>
         <div>
           <div x-show="gsm_wrapper" class="checkbox-wrapper">
             <input @click="gsm_on = ! gsm_on" class="custom-checkbox" type="checkbox" name="gsm_on" value="" id="gsm_on" />
-            <label class="custom-form-label" for="gsm_on">
+            <label class="custom-form-label max-w-[100%]" for="gsm_on">
               Enable 3G/GPRS (you need an external 3G dongle)
             </label>
           </div>
           <div x-show="proxy_wrapper" class="checkbox-wrapper">
             <input @click="proxy_on = ! proxy_on" class="custom-checkbox" type="checkbox" name="proxy_on" value="" id="proxy_on" />
-            <label class="custom-form-label" for="proxy_on">
+            <label class="custom-form-label max-w-[100%]" for="proxy_on">
               Enable proxy configuration
             </label>
           </div>
           <div x-show="wifi_ssid_scan_enabled_wrapper" class="checkbox-wrapper">
             <input @click="wifi_ssid_scan_enabled = ! wifi_ssid_scan_enabled" class="custom-checkbox" type="checkbox" name="wifi_ssid_scan_enabled" value="" id="wifi_ssid_scan_enabled" />
-            <label class="custom-form-label" for="wifi_ssid_scan_enabled">
+            <label class="custom-form-label max-w-[100%]" for="wifi_ssid_scan_enabled">
               Wifi ssid scan enabled
             </label>
           </div>
@@ -174,31 +174,31 @@
             <label class="custom-form-label" for="eth_ip">
               IP address (eg. 192.168.1.10)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="eth_ip" x-model="eth_ip" value="192.168.0.10" id="eth_ip" />
+            <input class="custom-input" type="text" name="eth_ip" x-model="eth_ip" value="192.168.0.10" id="eth_ip" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="eth_netmask">
               Netmask (eg. 255.255.255.0)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="eth_netmask" x-model="eth_netmask" value="255.255.255.0" id="eth_netmask" />
+            <input class="custom-input" type="text" name="eth_netmask" x-model="eth_netmask" value="255.255.255.0" id="eth_netmask" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="eth_gw">
               Gateway address (eg. 192.168.1.1)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="eth_gw" x-model="eth_gw" value="192.168.0.1" id="eth_gw" />
+            <input class="custom-input" type="text" name="eth_gw" x-model="eth_gw" value="192.168.0.1" id="eth_gw" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="eth_dns1">
               DNS server 1 (eg. 8.8.8.8)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="eth_dns1" x-model="eth_dns1" value="8.8.8.8" id="eth_dns1" />
+            <input class="custom-input" type="text" name="eth_dns1" x-model="eth_dns1" value="8.8.8.8" id="eth_dns1" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="eth_dns2">
               DNS server 2 (eg. 0.0.0.0)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="eth_dns2" x-model="eth_dns2" value="0.0.0.0" id="eth_dns2" />
+            <input class="custom-input" type="text" name="eth_dns2" x-model="eth_dns2" value="0.0.0.0" id="eth_dns2" />
           </div>
         </div>
         <div x-show="wifi_on">
@@ -206,47 +206,45 @@
             <label class="custom-form-label" for="wifi_ssid">
               Accesspoint name (SSID, case sensitive!)
             </label>
-            <input class="custom-input max-w-[240px]" type="text" name="wifi_ssid" x-model="wifi_ssid" value="wifi network" id="wifi_ssid" />
+            <input class="custom-input" type="text" name="wifi_ssid" x-model="wifi_ssid" value="wifi network" id="wifi_ssid" />
           </div>
           <div class="input-wrapper my-2">
-            <div class="flex md:items-center">
-              <label for="wifi_sec">Wireless security model</label>
-              <select type="select" x-model="wifi_sec" name="wifi_sec" id="wifi_sec" class="custom-select">
-                <option value="false">Open network (no ecryption)</option>
-                <option value="true">WPA2-PSK (AES)</option>
-              </select>
-            </div>
+            <label class="custom-form-label" for="wifi_sec">Wireless security model</label>
+            <select type="select" x-model="wifi_sec" name="wifi_sec" id="wifi_sec" class="custom-select">
+              <option value="false">Open network (no ecryption)</option>
+              <option value="true">WPA2-PSK (AES)</option>
+            </select>
           </div>
           <div x-show="wifi_sec" class="input-wrapper my-2">
             <label class="custom-form-label" for="wifi_pass">
               WPA2 key/password
             </label>
-            <input class="custom-input max-w-[240px]" type="text" x-model="wifi_pass" name="wifi_pass" value="wifi PSK key" id="wifi_pass" />
+            <input class="custom-input" type="text" x-model="wifi_pass" name="wifi_pass" value="wifi PSK key" id="wifi_pass" />
           </div>
         </div>
         <div x-show="gsm_on">
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="gsm_apn">APN name</label>
-            <input class="custom-input max-w-[240px]" type="text" x-model="gsm_apn" name="gsm_apn" value="please provide carrier apn" id="gsm_apn" />
+            <input class="custom-input" type="text" x-model="gsm_apn" name="gsm_apn" value="please provide carrier apn" id="gsm_apn" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="gsm_pin">Sim pin code</label>
-            <input class="custom-input max-w-[240px]" type="text" x-model="gsm_pin" name="gsm_pin" value="sim pin code, empty if none" id="gsm_pin" />
+            <input class="custom-input" type="text" x-model="gsm_pin" name="gsm_pin" value="sim pin code, empty if none" id="gsm_pin" />
           </div>
         </div>
         <div x-show="proxy_on">
           <p class="py-2">Just leave everythin empty (the default) to clear the proxy settings of a player</p>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="proxy_host">Proxy host</label>
-            <input class="custom-input max-w-[240px]" type="text" x-model="proxy_host" name="proxy_host" value="" placeholder="proxy server..." id="proxy_host" />
+            <input class="custom-input" type="text" x-model="proxy_host" name="proxy_host" value="" placeholder="proxy server..." id="proxy_host" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="proxy_user">Proxy user</label>
-            <input class="custom-input max-w-[240px]" type="text" x-model="proxy_user" name="proxy_user" value="" placeholder="proxy user... (optional)" id="proxy_user" />
+            <input class="custom-input" type="text" x-model="proxy_user" name="proxy_user" value="" placeholder="proxy user... (optional)" id="proxy_user" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="proxy_password">Proxy password</label>
-            <input class="custom-input max-w-[240px]" type="text" x-model="proxy_password" name="proxy_password" value="" placeholder="proxy password...  (optional)" id="proxy_password" />
+            <input class="custom-input" type="text" x-model="proxy_password" name="proxy_password" value="" placeholder="proxy password...  (optional)" id="proxy_password" />
           </div>
           <div class="input-wrapper my-2">
             <label class="custom-form-label" for="proxy_type">Proxy type</label>
