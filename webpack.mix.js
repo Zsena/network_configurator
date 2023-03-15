@@ -7,7 +7,7 @@ require("laravel-mix-ejs");
 
 mix.webpackConfig({
   stats: {
-      children: true,
+    children: true,
   },
 });
 
@@ -23,14 +23,12 @@ if (!mix.inProduction()) {
     .postCss("src/css/main.css", "dist/css", [
       require("postcss-import"),
       require("tailwindcss"),
-    ]);
+    ])
 
     // compiles ejs templates: (from, to, contents, options)
-    mix.ejs("src/index.ejs", "dist", {}, { base: "src" });
-
+    .ejs("src/index.ejs", "dist", {}, { base: "src" })
     // serves assets and sync with browser sync
-    mix.browserSync({ server: 'dist', proxy: null })
-
+    .browserSync({ server: "dist", proxy: null });
 } else {
   mix
     // sets public path for manifest file
@@ -43,10 +41,9 @@ if (!mix.inProduction()) {
     .postCss("src/css/main.css", "dist/css", [
       require("postcss-import"),
       require("tailwindcss"),
-    ]);
+    ])
 
-  // compiles ejs templates: (from, to, contents, options)
-  mix
+    // compiles ejs templates: (from, to, contents, options)
     .ejs("src/index.ejs", "dist", {}, { base: "src" })
 
     // cleans dist directory and compresses assets
