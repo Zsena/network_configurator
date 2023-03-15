@@ -25,6 +25,8 @@ if (!mix.inProduction()) {
       require("tailwindcss"),
     ])
 
+    .copy('src/favicon.ico', "dist")
+
     // compiles ejs templates: (from, to, contents, options)
     .ejs("src/index.ejs", "dist", {}, { base: "src" })
     // serves assets and sync with browser sync

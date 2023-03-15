@@ -156,12 +156,12 @@ document.addEventListener("alpine:init", () => {
 
 Alpine.start();
 
-const mobile_icon = document.getElementById("mobileIcon");
-const mobile_menu = document.getElementById("mobileMenu");
+// const mobile_icon = document.getElementById("mobileIcon");
+// const mobile_menu = document.getElementById("mobileMenu");
 
-function openCloseMenu() {
-  mobile_menu.classList.toggle("block");
-  mobile_menu.classList.toggle("active");
-}
+// function openCloseMenu() {
+//   mobile_menu.classList.toggle("block");
+//   mobile_menu.classList.toggle("active");
+// }
 
-mobile_icon.addEventListener("click", openCloseMenu);
+// mobile_icon.addEventListener("click", openCloseMenu);
