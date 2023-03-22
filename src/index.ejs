@@ -29,13 +29,13 @@
   </header>
   <main class="container px-4 py-10 mx-auto">
     <!-- Page content goes here -->
-    <section>
-      <div class="w-full">
+    <section :class="!all_config ? 'min-h-[500px]' : ''">
+      <div class="w-full flex flex-col items-center">
         <h3 class="h3-elem text-zinc-400 flex items-center" style="text-shadow: 0 5px 5px rgb(0 0 0 / 30%);">
           <svg class="mr-3" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 1920 1792">
             <path fill="currentColor" d="M896 896q0-106-75-181t-181-75t-181 75t-75 181t75 181t181 75t181-75t75-181zm768 512q0-52-38-90t-90-38t-90 38t-38 90q0 53 37.5 90.5t90.5 37.5t90.5-37.5t37.5-90.5zm0-1024q0-52-38-90t-90-38t-90 38t-38 90q0 53 37.5 90.5T1536 512t90.5-37.5T1664 384zm-384 421v185q0 10-7 19.5t-16 10.5l-155 24q-11 35-32 76q34 48 90 115q7 11 7 20q0 12-7 19q-23 30-82.5 89.5T999 1423q-11 0-21-7l-115-90q-37 19-77 31q-11 108-23 155q-7 24-30 24H547q-11 0-20-7.5t-10-17.5l-23-153q-34-10-75-31l-118 89q-7 7-20 7q-11 0-21-8q-144-133-144-160q0-9 7-19q10-14 41-53t47-61q-23-44-35-82l-152-24q-10-1-17-9.5T0 987V802q0-10 7-19.5T23 772l155-24q11-35 32-76q-34-48-90-115q-7-11-7-20q0-12 7-20q22-30 82-89t79-59q11 0 21 7l115 90q34-18 77-32q11-108 23-154q7-24 30-24h186q11 0 20 7.5t10 17.5l23 153q34 10 75 31l118-89q8-7 20-7q11 0 21 8q144 133 144 160q0 8-7 19q-12 16-42 54t-45 60q23 48 34 82l152 23q10 2 17 10.5t7 19.5zm640 533v140q0 16-149 31q-12 27-30 52q51 113 51 138q0 4-4 7q-122 71-124 71q-8 0-46-47t-52-68q-20 2-30 2t-30-2q-14 21-52 68t-46 47q-2 0-124-71q-4-3-4-7q0-25 51-138q-18-25-30-52q-149-15-149-31v-140q0-16 149-31q13-29 30-52q-51-113-51-138q0-4 4-7q4-2 35-20t59-34t30-16q8 0 46 46.5t52 67.5q20-2 30-2t30 2q51-71 92-112l6-2q4 0 124 70q4 3 4 7q0 25-51 138q17 23 30 52q149 15 149 31zm0-1024v140q0 16-149 31q-12 27-30 52q51 113 51 138q0 4-4 7q-122 71-124 71q-8 0-46-47t-52-68q-20 2-30 2t-30-2q-14 21-52 68t-46 47q-2 0-124-71q-4-3-4-7q0-25 51-138q-18-25-30-52q-149-15-149-31V314q0-16 149-31q13-29 30-52q-51-113-51-138q0-4 4-7q4-2 35-20t59-34t30-16q8 0 46 46.5t52 67.5q20-2 30-2t30 2q51-71 92-112l6-2q4 0 124 70q4 3 4 7q0 25-51 138q17 23 30 52q149 15 149 31z" />
           </svg>
-          <span> Please select your device</span>
+          <span>Please select your device</span>
         </h3>
         <div x-data="dropdown" x-on:keydown.escape.prevent.stop="close($refs.button)" x-on:focusin.window="! $refs.panel.contains($event.target) && close()" x-id="['dropdown-button']" class="relative max-w-xs mb-10">
           <!-- Button -->
@@ -48,163 +48,167 @@
           </button>
           <!-- Panel -->
           <div x-ref="panel" x-show="open" x-transition.origin.top.left @click.outside="close($refs.button)" :id="$id('dropdown-button')" style="display: none" class="absolute left-0 mt-2 w-full rounded-md bg-white shadow-md">
-            <div x-show="device_type != 'All'" @click="handleAll, close($refs.button)" class="dropdown-option" x-text="device_all">All</div>
+            <!-- <div x-show="device_type != 'All'" @click="handleAll, close($refs.button)" class="dropdown-option" x-text="device_all">All</div> -->
             <div @click="handleIsr, close($refs.button)" class="dropdown-option" x-text="device_isr">MPX/ISR </div>
             <div @click="handleAndroid, close($refs.button)" class="dropdown-option" x-text="device_android">Android </div>
           </div>
         </div>
       </div>
-      <div class="lg:flex justify-between items-center max-w-3xl">
-        <div>
-          <div class="checkbox-wrapper">
-            <input @click="dhcp_off = ! dhcp_off" class="custom-checkbox" type="checkbox" name="dhcp_off" value="" id="dhcp_off" />
-            <label class="custom-form-label max-w-[100%]" for="dhcp_off">
-              Use fixed IP(v4) for wired connection (instead of DHCP)
-            </label>
+      <div x-cloak x-show="all_config">
+        <section class="lg:flex justify-between items-center max-w-3xl mx-auto">
+          <div>
+            <div class="checkbox-wrapper">
+              <input @click="dhcp_off = ! dhcp_off" class="custom-checkbox" type="checkbox" name="dhcp_off" value="" id="dhcp_off" />
+              <label class="custom-form-label max-w-[100%]" for="dhcp_off">
+                Use fixed IP(v4) for wired connection (instead of DHCP)
+              </label>
+            </div>
+            <div class="checkbox-wrapper">
+              <input @click="wifi_on = ! wifi_on" class="custom-checkbox" type="checkbox" name="wifi_on" value="" id="wifi_on" />
+              <label class="custom-form-label max-w-[100%]" for="wifi_on">Enable WiFi</label>
+            </div>
           </div>
-          <div class="checkbox-wrapper">
-            <input @click="wifi_on = ! wifi_on" class="custom-checkbox" type="checkbox" name="wifi_on" value="" id="wifi_on" />
-            <label class="custom-form-label max-w-[100%]" for="wifi_on">Enable WiFi</label>
+          <div>
+            <div x-show="gsm_wrapper" class="checkbox-wrapper">
+              <input @click="gsm_on = ! gsm_on" class="custom-checkbox" type="checkbox" name="gsm_on" value="" id="gsm_on" />
+              <label class="custom-form-label max-w-[100%]" for="gsm_on">
+                Enable 3G/GPRS (you need an external 3G dongle)
+              </label>
+            </div>
+            <div x-show="proxy_wrapper" class="checkbox-wrapper">
+              <input @click="proxy_on = ! proxy_on" class="custom-checkbox" type="checkbox" name="proxy_on" value="" id="proxy_on" />
+              <label class="custom-form-label max-w-[100%]" for="proxy_on">
+                Enable proxy configuration
+              </label>
+            </div>
           </div>
-        </div>
-        <div>
-          <div x-show="gsm_wrapper" class="checkbox-wrapper">
-            <input @click="gsm_on = ! gsm_on" class="custom-checkbox" type="checkbox" name="gsm_on" value="" id="gsm_on" />
-            <label class="custom-form-label max-w-[100%]" for="gsm_on">
-              Enable 3G/GPRS (you need an external 3G dongle)
-            </label>
-          </div>
-          <div x-show="proxy_wrapper" class="checkbox-wrapper">
-            <input @click="proxy_on = ! proxy_on" class="custom-checkbox" type="checkbox" name="proxy_on" value="" id="proxy_on" />
-            <label class="custom-form-label max-w-[100%]" for="proxy_on">
-              Enable proxy configuration
-            </label>
-          </div>
-          <div x-show="wifi_ssid_scan_enabled_wrapper" class="checkbox-wrapper">
-            <input @click="wifi_ssid_scan_enabled = ! wifi_ssid_scan_enabled" class="custom-checkbox" type="checkbox" name="wifi_ssid_scan_enabled" value="" id="wifi_ssid_scan_enabled" />
-            <label class="custom-form-label max-w-[100%]" for="wifi_ssid_scan_enabled">
-              Wifi ssid scan enabled
-            </label>
-          </div>
-        </div>
-      </div>
-      <div class="my-5">
-        <div x-show="dhcp_off">
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="eth_ip">
-              IP address (eg. 192.168.1.10)
-            </label>
-            <input class="custom-input" type="text" name="eth_ip" x-model="eth_ip" value="192.168.0.10" id="eth_ip" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="eth_netmask">
-              Netmask (eg. 255.255.255.0)
-            </label>
-            <input class="custom-input" type="text" name="eth_netmask" x-model="eth_netmask" value="255.255.255.0" id="eth_netmask" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="eth_gw">
-              Gateway address (eg. 192.168.1.1)
-            </label>
-            <input class="custom-input" type="text" name="eth_gw" x-model="eth_gw" value="192.168.0.1" id="eth_gw" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="eth_dns1">
-              DNS server 1 (eg. 8.8.8.8)
-            </label>
-            <input class="custom-input" type="text" name="eth_dns1" x-model="eth_dns1" value="8.8.8.8" id="eth_dns1" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="eth_dns2">
-              DNS server 2 (eg. 0.0.0.0)
-            </label>
-            <input class="custom-input" type="text" name="eth_dns2" x-model="eth_dns2" value="0.0.0.0" id="eth_dns2" />
-          </div>
-        </div>
-        <div x-show="wifi_on">
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="wifi_ssid">
-              Accesspoint name (SSID, case sensitive!)
-            </label>
-            <input class="custom-input" type="text" name="wifi_ssid" x-model="wifi_ssid" value="wifi network" id="wifi_ssid" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="wifi_sec">Wireless security model</label>
-            <select type="select" x-model="wifi_sec" name="wifi_sec" id="wifi_sec" class="custom-select">
-              <option value="false">Open network (no ecryption)</option>
-              <option value="true">WPA2-PSK (AES)</option>
-            </select>
-          </div>
-          <div x-show="wifi_sec" class="input-wrapper my-2">
-            <label class="custom-form-label" for="wifi_pass">
-              WPA2 key/password
-            </label>
-            <input class="custom-input" type="text" x-model="wifi_pass" name="wifi_pass" value="wifi PSK key" id="wifi_pass" />
-          </div>
-        </div>
-        <div x-show="gsm_on">
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="gsm_apn">APN name</label>
-            <input class="custom-input" type="text" x-model="gsm_apn" name="gsm_apn" value="please provide carrier apn" id="gsm_apn" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="gsm_pin">Sim pin code</label>
-            <input class="custom-input" type="text" x-model="gsm_pin" name="gsm_pin" value="sim pin code, empty if none" id="gsm_pin" />
-          </div>
-        </div>
-        <div x-show="proxy_on">
-          <p class="py-2">Just leave everythin empty (the default) to clear the proxy settings of a player</p>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="proxy_host">Proxy host</label>
-            <input class="custom-input" type="text" x-model="proxy_host" name="proxy_host" value="" placeholder="proxy server..." id="proxy_host" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="proxy_user">Proxy user</label>
-            <input class="custom-input" type="text" x-model="proxy_user" name="proxy_user" value="" placeholder="proxy user... (optional)" id="proxy_user" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="proxy_password">Proxy password</label>
-            <input class="custom-input" type="text" x-model="proxy_password" name="proxy_password" value="" placeholder="proxy password...  (optional)" id="proxy_password" />
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="proxy_type">Proxy type</label>
-            <select type="select" x-model="proxy_type" name="proxy_type" id="proxy_type" class="custom-select">
-              <option value="http">HTTP</option>
-              <option value="http_1_0">HTTP 1.0</option>
-              <option value="socks4">SOCKS 4</option>
-              <option value="socks5">SOCKS 5</option>
-              <option value="socks4a">SOCKS 4A</option>
-              <option value="socks5h">SOCKS 5 HOSTNAME</option>
-            </select>
-          </div>
-          <div class="input-wrapper my-2">
-            <label class="custom-form-label" for="proxy_auth">Proxy auth</label>
-            <select type="select" x-model="proxy_auth" name="proxy_auth" id="proxy_auth" class="custom-select">
-              <option value="basic">BASIC</option>
-              <option value="digest">DIGEST</option>
-              <option value="negotiate">NEGOTIATE</option>
-              <option value="ntlm">NTLM</option>
-              <option value="anyauth">ANYAUTH</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <section class="my-5">
-      <h5 class="h5-elem mb-5">Please download the file called update_config.cfg to a pendrive (FAT file system) by clicking on the button below, then and plug it into the USB port of your device for 20 seconds. Reboot the player afterwards.</h5>
-      <div class="my-5">
-        <button class="btn-secondary cursor-pointer" @click="download_data">Download update_config.cfg</button>
+        <section class="md:flex justify-between">
+          <div class="my-5 md:pr-5 md:py-5" :class="{'w-full': dhcp_off || wifi_on || proxy_on }">
+            <section class="my-5">
+              <div x-show="dhcp_off">
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="eth_ip">
+                    IP address (eg. 192.168.1.10)
+                  </label>
+                  <input class="custom-input" type="text" name="eth_ip" x-model="eth_ip" value="192.168.0.10" id="eth_ip" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="eth_netmask">
+                    Netmask (eg. 255.255.255.0)
+                  </label>
+                  <input class="custom-input" type="text" name="eth_netmask" x-model="eth_netmask" value="255.255.255.0" id="eth_netmask" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="eth_gw">
+                    Gateway address (eg. 192.168.1.1)
+                  </label>
+                  <input class="custom-input" type="text" name="eth_gw" x-model="eth_gw" value="192.168.0.1" id="eth_gw" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="eth_dns1">
+                    DNS server 1 (eg. 8.8.8.8)
+                  </label>
+                  <input class="custom-input" type="text" name="eth_dns1" x-model="eth_dns1" value="8.8.8.8" id="eth_dns1" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="eth_dns2">
+                    DNS server 2 (eg. 0.0.0.0)
+                  </label>
+                  <input class="custom-input" type="text" name="eth_dns2" x-model="eth_dns2" value="0.0.0.0" id="eth_dns2" />
+                </div>
+              </div>
+              <div x-show="wifi_on">
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="wifi_ssid">
+                    Accesspoint name (SSID, case sensitive!)
+                  </label>
+                  <input class="custom-input" type="text" name="wifi_ssid" x-model="wifi_ssid" value="wifi network" id="wifi_ssid" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="wifi_sec">Wireless security model</label>
+                  <select type="select" x-model="wifi_sec" name="wifi_sec" id="wifi_sec" class="custom-select">
+                    <option value="false">Open network (no ecryption)</option>
+                    <option value="true">WPA2-PSK (AES)</option>
+                  </select>
+                </div>
+                <div x-show="wifi_sec" class="input-wrapper my-2">
+                  <label class="custom-form-label" for="wifi_pass">
+                    WPA2 key/password
+                  </label>
+                  <input class="custom-input" type="text" x-model="wifi_pass" name="wifi_pass" value="wifi PSK key" id="wifi_pass" />
+                </div>
+                <div x-show="wifi_ssid_scan_enabled_wrapper" class="checkbox-wrapper">
+                  <input @click="wifi_ssid_scan_enabled = ! wifi_ssid_scan_enabled" class="custom-checkbox" type="checkbox" name="wifi_ssid_scan_enabled" value="" id="wifi_ssid_scan_enabled" />
+                  <label class="custom-form-label max-w-[100%]" for="wifi_ssid_scan_enabled">
+                    Wifi ssid scan enabled
+                  </label>
+                </div>
+              </div>
+              <div x-show="gsm_on">
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="gsm_apn">APN name</label>
+                  <input class="custom-input" type="text" x-model="gsm_apn" name="gsm_apn" value="please provide carrier apn" id="gsm_apn" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="gsm_pin">Sim pin code</label>
+                  <input class="custom-input" type="text" x-model="gsm_pin" name="gsm_pin" value="sim pin code, empty if none" id="gsm_pin" />
+                </div>
+              </div>
+              <div x-show="proxy_on">
+                <p class="py-2">Just leave everythin empty (the default) to clear the proxy settings of a player</p>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="proxy_host">Proxy host</label>
+                  <input class="custom-input" type="text" x-model="proxy_host" name="proxy_host" value="" placeholder="proxy server..." id="proxy_host" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="proxy_user">Proxy user</label>
+                  <input class="custom-input" type="text" x-model="proxy_user" name="proxy_user" value="" placeholder="proxy user... (optional)" id="proxy_user" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="proxy_password">Proxy password</label>
+                  <input class="custom-input" type="text" x-model="proxy_password" name="proxy_password" value="" placeholder="proxy password...  (optional)" id="proxy_password" />
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="proxy_type">Proxy type</label>
+                  <select type="select" x-model="proxy_type" name="proxy_type" id="proxy_type" class="custom-select">
+                    <option value="http">HTTP</option>
+                    <option value="http_1_0">HTTP 1.0</option>
+                    <option value="socks4">SOCKS 4</option>
+                    <option value="socks5">SOCKS 5</option>
+                    <option value="socks4a">SOCKS 4A</option>
+                    <option value="socks5h">SOCKS 5 HOSTNAME</option>
+                  </select>
+                </div>
+                <div class="input-wrapper my-2">
+                  <label class="custom-form-label" for="proxy_auth">Proxy auth</label>
+                  <select type="select" x-model="proxy_auth" name="proxy_auth" id="proxy_auth" class="custom-select">
+                    <option value="basic">BASIC</option>
+                    <option value="digest">DIGEST</option>
+                    <option value="negotiate">NEGOTIATE</option>
+                    <option value="ntlm">NTLM</option>
+                    <option value="anyauth">ANYAUTH</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="my-5 w-full" :class="{'md:border-l md:border-l-teal-400 md:pl-5 md:py-5': dhcp_off || wifi_on || proxy_on }">
+            <h6 class="h6-elem mb-5">Please download the file called update_config.cfg to a pendrive (FAT file system) by clicking on the button below, then and plug it into the USB port of your device for 20 seconds. Reboot the player afterwards.</h6>
+            <div class="my-5">
+              <button class="btn-secondary cursor-pointer" @click="download_data">Download update_config.cfg</button>
+            </div>
+            <h6 class="h6-elem mb-2">Config preview</h6>
+            <p class="italic font-medium mb-2">If the above does not work (with old browsers), just create the file with notepad with the following content:</p>
+            <div class="border-blue/40 border-2 max-w-[400px] p-5" x-html="render_config_br()"></div>
+          </div>
+        </section>
       </div>
-      <p class="italic font-medium">If the above does not work (with old browsers), just create the file with notepad with the following content:</p>
-    </section>
-    <section class="my-5">
-      <h5 class="h5-elem mb-2">Config preview</h5>
-      <div class="border-blue/40 border-2 max-w-[400px] p-5" x-html="render_config_br()"></div>
     </section>
   </main>
-  <footer class="w-full p-4 bg-gradient-to-r from-teal-200/80 to-emerald-800/80 border-t-2 border-gray/90 shadow-lg drop-shadow-lg md:flex md:items-center md:justify-between md:p-6">
-    <span class="text-sm text-center text-white mx-auto">© 2023 <a href="https://mptrdev.com/" class="hover:underline">Mptrdev.com</a>. All Rights Reserved.
+  <footer :class="!all_config ? 'fixed' : 'relative'" class="w-full bottom-0 p-4 bg-gradient-to-r from-teal-200/80 to-emerald-800/80 border-t-2 border-gray/90 shadow-lg drop-shadow-lg md:flex md:items-center md:justify-between md:p-6">
+    <span class="text-sm text-center text-white mx-auto">© Copyright - <a href="https://www.thecloudcasting.com/" target="_blank" class="font-semibold hover:underline">CloudCasting 2023</a> - Design & Development by <a href="https://mptrdev.com/" class="font-semibold hover:underline">Mptrdev.com</a>. All Rights Reserved.
     </span>
   </footer>
 </body>

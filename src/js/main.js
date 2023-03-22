@@ -48,27 +48,21 @@ document.addEventListener("alpine:init", () => {
     gsm_wrapper: true,
     proxy_wrapper: true,
     wifi_ssid_scan_enabled_wrapper: false,
-    all_config: true,
+    all_config: false,
     device_type: "Device Type",
     device_android: "Device Type: Android",
     device_isr: "Device Type: MPX/ISR",
-    device_all: "Device Type: All",
 
     init() {
       this.render_config();
       this.render_config_br();
     },
 
-    
-    handleAll(e) {
-      this.gsm_wrapper = true;
-      this.proxy_wrapper = true;
-      this.device_type = this.device_all;
-    },
-
     handleIsr(e) {
       this.gsm_wrapper = false;
       this.device_type = this.device_isr;
+      this.all_config = true;
+      this.wifi_ssid_scan_enabled_wrapper = false;
     },
 
     handleAndroid(e) {
@@ -78,6 +72,7 @@ document.addEventListener("alpine:init", () => {
       this.gsm_on = false;
       this.proxy_on = false;
       this.wifi_ssid_scan_enabled_wrapper = true;
+      this.all_config = true;
     },
 
     render_config_br() {
@@ -85,42 +80,59 @@ document.addEventListener("alpine:init", () => {
     },
 
     render_config(lineseparator) {
-      let mark = '"'
+      let mark = '"';
       let tmp = "";
       tmp += "eth_dhcp=";
-      if(this.device_type === this.device_android){
-        mark ="";
+      if (this.device_type === this.device_android) {
+        mark = "";
         tmp += this.dhcp_off ? "0" : "1";
         if (!this.wifi_ssid_scan_enabled) {
-          tmp += lineseparator + 'wifi_ssid_scan_enabled=' + mark + "0";
+          tmp += lineseparator + "wifi_ssid_scan_enabled=" + mark + "0";
         } else {
-          tmp += lineseparator + 'wifi_ssid_scan_enabled=' + mark + "1";
+          tmp += lineseparator + "wifi_ssid_scan_enabled=" + mark + "1";
         }
       } else {
-        mark ='"';
+        mark = '"';
         tmp += this.dhcp_off ? "false" : "true";
       }
       tmp += lineseparator;
       if (this.dhcp_off) {
-        tmp += 'eth_ip=' + mark + this.eth_ip + mark + lineseparator;
-        tmp += 'eth_netmask='+ mark + this.eth_netmask + mark + lineseparator;
-        tmp += 'eth_gw=' + mark + this.eth_gw + mark + lineseparator;
-        tmp += 'eth_dns1=' + mark + this.eth_dns1 + mark + lineseparator;
-        tmp += 'eth_dns2=' + mark + this.eth_dns2 + mark + lineseparator;
+        tmp += "eth_ip=" + mark + this.eth_ip + mark + lineseparator;
+        tmp += "eth_netmask=" + mark + this.eth_netmask + mark + lineseparator;
+        tmp += "eth_gw=" + mark + this.eth_gw + mark + lineseparator;
+        tmp += "eth_dns1=" + mark + this.eth_dns1 + mark + lineseparator;
+        tmp += "eth_dns2=" + mark + this.eth_dns2 + mark + lineseparator;
       }
-      tmp += "wifi_enabled=";
-      tmp += this.wifi_on ? "true" : "false";
-      tmp += lineseparator;
-      if (this.wifi_on) {
-        tmp += 'wifi_ssid=' + mark + this.wifi_ssid + mark + lineseparator;
-        tmp += 'wifi_mode='+ mark + 'sta' + mark + lineseparator;
-        tmp += "wifi_security=";
-        tmp += this.wifi_sec ? "true" : "false";
+      if (this.device_type === this.device_android) {
+        tmp += "wifi_enabled=";
+        tmp += this.wifi_on ? "1" : "0";
         tmp += lineseparator;
-        if (this.wifi_sec) {
-          tmp += 'wifi_pass='+ mark + this.wifi_pass + mark + lineseparator;
-        }
-      } else tmp += 'wifi_ssid='+ mark + mark + lineseparator;
+      } else {
+        tmp += "wifi_enabled=";
+        tmp += this.wifi_on ? "true" : "false";
+        tmp += lineseparator;
+      }
+      if (this.device_type === this.device_android) {
+        tmp += "wifi_ssid=" + mark + this.wifi_ssid + mark + lineseparator;
+        tmp += "wifi_mode=" + mark + "sta" + mark + lineseparator;
+        tmp += "wifi_security=";
+        tmp += this.wifi_sec ? "1" : "0";
+
+        tmp += lineseparator;
+      } else {
+        if (this.wifi_on) {
+          tmp += "wifi_ssid=" + mark + this.wifi_ssid + mark + lineseparator;
+          tmp += "wifi_mode=" + mark + "sta" + mark + lineseparator;
+          tmp += "wifi_security=";
+          tmp += this.wifi_sec ? "true" : "false";
+
+          tmp += lineseparator;
+          if (this.wifi_sec) {
+            tmp += "wifi_pass=" + mark + this.wifi_pass + mark + lineseparator;
+          }
+        } else tmp += "wifi_ssid=" + mark + mark + lineseparator;
+      }
+
       if (this.gsm_on) {
         tmp += 'gsm_apn="' + this.gsm_apn + '"' + lineseparator;
         tmp += 'gsm_pin="' + this.gsm_pin + '"' + lineseparator;
