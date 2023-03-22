@@ -1,5 +1,7 @@
 # cloudcasting-network-config-generator
 
+This is a JavaScript code project that uses the Alpine.js framework for developing interactive applications. It contains the application settings, including network settings such as Ethernet and Wi-Fi, as well as GSM network connections and proxy settings. The init() function initializes the application, and the handleIsr() and handleAndroid() functions handle the settings related to different device types. The Alpine.data() function defines the data model, whose properties are the values of the settings. The render_config() function handles the display of the data by compiling the configuration file in the appropriate format.
+
 ## Getting started
 
 ```
