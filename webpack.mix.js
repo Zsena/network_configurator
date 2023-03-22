@@ -21,7 +21,6 @@ if (!mix.inProduction()) {
 
     // compiles sass and add css3 prefixes: (from, to)
     .postCss("src/css/main.css", "dist/css", [
-      require("postcss-import"),
       require("tailwindcss"),
     ])
 
