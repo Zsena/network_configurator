@@ -5,7 +5,7 @@ This is a JavaScript code project that uses the Alpine.js framework for developi
 ## Getting started
 
 ```
-git clone git@gitlab.com:cloudcasting/cloudcasting-cms-project/cloudcasting-network-config-generator.git
+git clone
 
 npm install
 ```
@@ -37,8 +37,7 @@ npm run prod
 ```
 cd existing_repo
 
-git remote add origin https://gitlab.com/cloudcasting/cloudcasting-cms-project/cloudcasting-network-config-generator.git
-
+git remote add origin
 git branch -M main
 git push -uf origin main
 ```
